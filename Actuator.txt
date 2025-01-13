@@ -1,0 +1,31 @@
+Thus, the only two available by default are /health and /info.
+
+If we want to enable all of them, we could set management.endpoints.web.exposure.include=*
+
+
+for circuit breaker
+resilience4j.circuitbreaker:
+ instances:
+     backendA:
+         registerHealthIndicator: true
+         slidingWindowSize: 100
+     backendB:
+         registerHealthIndicator: true
+         slidingWindowSize: 10
+         permittedNumberOfCallsInHalfOpenState: 3
+         slidingWindowType: TIME_BASED
+         recordFailurePredicate: io.github.robwin.exception.RecordFailurePredicate
+
+12 factor app
+Codebase: Each microservice should have its own repository.
+Dependencies: Explicitly declare dependencies (e.g., in package.json for Node.js or requirements.txt for Python).
+Config: Use environment variables to store configurations, avoiding hardcoding.
+Backing Services: Treat external services (e.g., databases, queues) as attached resources.
+Build, Release, Run: Separate these stages for consistent deployments.
+Processes: Build stateless services to simplify scaling.
+Port Binding: Ensure each service exposes itself via ports.
+Concurrency: Design services to scale horizontally.
+Disposability: Services should start up and shut down gracefully.
+Dev/Prod Parity: Minimize differences between development and production environments.
+Logs: Treat logs as event streams and manage them centrally.
+Admin Processes: Run one-off admin tasks as separate processes.
